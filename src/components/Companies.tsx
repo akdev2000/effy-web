@@ -1,8 +1,6 @@
 import Table, { ColumnType } from "@/components/Table";
 import { Root, TabTypes } from "../components/Root";
 import { useState } from "react";
-import Companies from "@/components/Companies";
-import Users from "@/components/Users";
 
 const companyColumn: ColumnType[] = [
   {
@@ -33,18 +31,16 @@ const data = [
   },
 ];
 
-export default function Index() {
+export default function Companies() {
   return (
-    <Root>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "flex-start",
-          justifyContent: "flex-start",
-        }}
-      >
-        <Companies />
-      </div>
-    </Root>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "flex-start",
+        justifyContent: "flex-start",
+      }}
+    >
+      <Table columns={companyColumn} rows={data} tableType="companies" />
+    </div>
   );
 }

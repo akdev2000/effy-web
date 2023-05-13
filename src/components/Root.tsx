@@ -1,10 +1,14 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
+
+export enum TabTypes {
+  COMPANIES = "COMPANIES",
+  ALLUSERS = "ALLUSERS",
+}
 
 type Props = {
   children: React.ReactElement;
-  selectedNav?: "companies" | "allusers";
 };
-export function Root({ children, selectedNav = "companies" }: Props) {
+export function Root({ children }: Props) {
   return (
     <div
       style={{
@@ -17,19 +21,12 @@ export function Root({ children, selectedNav = "companies" }: Props) {
     >
       <div className="navbar bg-base-100">
         <div className="flex-1">
-          <a className="btn btn-ghost normal-case text-xl">
-            Admin Panel - Effy
+          <a
+            href="/"
+            className="btn btn-ghost normal-case text-xl bg-[#e5e7eb] rounded-[0.5rem]"
+          >
+            Companies - Admin Panel
           </a>
-          <div className="flex-none">
-            <ul className="menu menu-horizontal px-1">
-              <li className={selectedNav == "companies" ? "btn" : ""}>
-                <a>Companies</a>
-              </li>
-              <li className={selectedNav == "allusers" ? "bg-neutral" : ""}>
-                <a>All Users</a>
-              </li>
-            </ul>
-          </div>
         </div>
       </div>
       <div

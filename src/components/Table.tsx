@@ -3,6 +3,7 @@ interface Props {
   rows: Record<string, any>[];
   onCreate?: (id: number) => void;
   onDelete?: (id: number) => void;
+  tableType?: "companies" | "users";
 }
 
 export interface ColumnType {
@@ -24,6 +25,11 @@ export default function Table(props: Props) {
             <th>
               <p>Actions</p>
             </th>
+            {props.tableType == "companies" && (
+              <th>
+                <p>Users</p>
+              </th>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -33,12 +39,37 @@ export default function Table(props: Props) {
                 {props.columns?.map((column) => {
                   return <td> {rows?.[column.id]} </td>;
                 })}
-                <td>
-                  <div className="flex flex-row items-center space-x-1">
-                    <button className="btn">Add New User</button>
-                    <button className="btn btn-error text-white">Delete</button>
-                  </div>
-                </td>
+                {props.tableType == "companies" && (
+                  <>
+                    <td>
+                      <div className="flex flex-row items-center space-x-1">
+                        <button className="btn">Add New User</button>
+                        <button className="btn btn-error text-white">
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                    <td>
+                      <a
+                        href={`/users?id=${rows?.id}`}
+                        className="flex flex-row items-center space-x-1"
+                      >
+                        <button className="btn">View Users</button>
+                      </a>
+                    </td>
+                  </>
+                )}
+
+                {props.tableType == "users" && (
+                  <td>
+                    <div className="flex flex-row items-center space-x-1">
+                      <button className="btn">Migrate</button>
+                      <button className="btn btn-error text-white">
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                )}
               </tr>
             );
           })}
