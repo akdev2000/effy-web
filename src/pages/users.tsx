@@ -1,4 +1,4 @@
-import { Root, TabTypes } from "@/components/Root";
+import { Root } from "@/components/Root";
 import Users from "@/components/Users";
 
 export default function users() {

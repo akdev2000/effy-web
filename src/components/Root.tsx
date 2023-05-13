@@ -1,4 +1,5 @@
 import React, { ReactElement, useEffect } from "react";
+import Modal from "./Modal";
 
 export enum TabTypes {
   COMPANIES = "COMPANIES",
@@ -28,6 +29,11 @@ export function Root({ children }: Props) {
             Companies - Admin Panel
           </a>
         </div>
+        <div className="flex flex-row items-center space-x-1">
+          <label className="btn" htmlFor="add_new_company">
+            Add New Company
+          </label>
+        </div>
       </div>
       <div
         style={{
@@ -39,6 +45,51 @@ export function Root({ children }: Props) {
       >
         {children}
       </div>
+      <Modal modalId="add_new_company" title="Add New Company">
+        <div>
+          <form>
+            <div className="flex items-center m-2 justify-between">
+              <input
+                type="text"
+                placeholder="Name"
+                className="input input-bordered form-control"
+              />
+              <input
+                type="text"
+                placeholder="Address"
+                className="input input-bordered form-control"
+              />
+            </div>
+            <div className="flex items-center m-2 justify-between">
+              <input
+                type="text"
+                placeholder="Latitute"
+                className="input input-bordered form-control"
+              />
+              <input
+                type="text"
+                placeholder="Logntitude"
+                className="input input-bordered form-control"
+              />
+            </div>
+          </form>
+          <div className="flex space-x-2 justify-end">
+            <div className="modal-action">
+              <label
+                htmlFor="add_new_company"
+                className="btn btn-error text-white"
+              >
+                Cancel
+              </label>
+            </div>
+            <div className="modal-action">
+              <label htmlFor="add_new_company" className="btn">
+                Add Company
+              </label>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

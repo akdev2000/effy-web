@@ -1,6 +1,5 @@
 import Table, { ColumnType } from "@/components/Table";
-import { Root, TabTypes } from "../components/Root";
-import { useState } from "react";
+import Modal from "./Modal";
 
 const companyColumn: ColumnType[] = [
   {
@@ -55,6 +54,36 @@ export default function Users() {
       }}
     >
       <Table columns={companyColumn} rows={data} tableType="users" />
+      <Modal modalId="migrate_user" title="Migrate">
+        <div>
+          <form>
+            <div className="flex items-center m-2 justify-between">
+              <select className="select select-bordered w-full max-w-xs">
+                <option disabled selected>
+                  Who shot first?
+                </option>
+                <option>Han Solo</option>
+                <option>Greedo</option>
+              </select>
+            </div>
+          </form>
+          <div className="flex space-x-2 justify-end">
+            <div className="modal-action">
+              <label
+                htmlFor="migrate_user"
+                className="btn btn-error text-white"
+              >
+                Cancel
+              </label>
+            </div>
+            <div className="modal-action">
+              <label htmlFor="migrate_user" className="btn btn-warning">
+                Migrate
+              </label>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

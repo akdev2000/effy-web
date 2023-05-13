@@ -43,7 +43,9 @@ export default function Table(props: Props) {
                   <>
                     <td>
                       <div className="flex flex-row items-center space-x-1">
-                        <button className="btn">Add New User</button>
+                        <label className="btn" htmlFor="add_new_user">
+                          Add New User
+                        </label>
                         <button className="btn btn-error text-white">
                           Delete
                         </button>
@@ -51,7 +53,7 @@ export default function Table(props: Props) {
                     </td>
                     <td>
                       <a
-                        href={`/users?id=${rows?.id}`}
+                        href={`/users?id=${rows}`}
                         className="flex flex-row items-center space-x-1"
                       >
                         <button className="btn">View Users</button>
@@ -63,7 +65,9 @@ export default function Table(props: Props) {
                 {props.tableType == "users" && (
                   <td>
                     <div className="flex flex-row items-center space-x-1">
-                      <button className="btn">Migrate</button>
+                      <label htmlFor="migrate_user" className="btn">
+                        Migrate
+                      </label>
                       <button className="btn btn-error text-white">
                         Delete
                       </button>

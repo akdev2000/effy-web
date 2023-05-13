@@ -1,8 +1,6 @@
-import Table, { ColumnType } from "@/components/Table";
-import { Root, TabTypes } from "../components/Root";
-import { useState } from "react";
 import Companies from "@/components/Companies";
-import Users from "@/components/Users";
+import { ColumnType } from "@/components/Table";
+import { Root } from "../components/Root";
 
 const companyColumn: ColumnType[] = [
   {
