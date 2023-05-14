@@ -57,6 +57,7 @@ export default function Users() {
   const [selectedCompanyToMigrate, setSelectedCompanyToMigrate] = useState(
     router.query.id
   );
+  const [selectedUserId, setSelectedUserId] = useState(0);
 
   useEffect(() => {
     if (data) {
@@ -84,7 +85,10 @@ export default function Users() {
 
   useEffect(() => {
     if (companies.data) {
-      console.log("companies.data ", companies.data);
+      const defaultCompany = companies.data?.data.filter(
+        (company: any) => company.id != router.query.id
+      )[0];
+      setSelectedCompanyToMigrate(defaultCompany.id);
     }
   }, [companies.data]);
   return (
@@ -120,6 +124,9 @@ export default function Users() {
             await deleteUser.fetchData({}, `/${id}`);
             await fetchData(`/${router.query.id}`);
           }}
+          onMigrate={async (id) => {
+            setSelectedUserId(id);
+          }}
         />
       )}
       <Modal modalId="migrate_user" title="Migrate">
@@ -132,6 +139,7 @@ export default function Users() {
                     setSelectedCompanyToMigrate(event.target.value)
                   }
                   className="select select-bordered w-full max-w-xs"
+                  value={selectedCompanyToMigrate}
                 >
                   {companies.data?.data?.map((company: any) => {
                     return (
@@ -159,7 +167,7 @@ export default function Users() {
               <label
                 onClick={async () => {
                   await migrateUser.fetchData({
-                    id: router.query.id,
+                    id: selectedUserId,
                     company_id: selectedCompanyToMigrate,
                   });
                   await fetchData(`/${router.query.id}`);

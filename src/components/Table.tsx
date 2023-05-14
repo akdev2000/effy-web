@@ -3,7 +3,7 @@ import Link from "next/link";
 interface Props {
   columns: ColumnType[];
   rows: Record<string, any>[];
-  onCreate?: (id: number) => void;
+  onMigrate?: (id: number) => void;
   onDelete: (id: number) => void;
   tableType?: "companies" | "users";
 }
@@ -42,6 +42,9 @@ export default function Table(props: Props) {
                     if (column.id == "company") {
                       return <td key={columnIndex}> {rows?.Company?.name} </td>;
                     }
+                    if (column.id == "id") {
+                      return <td key={columnIndex}> {rowIndex + 1} </td>;
+                    }
                     return <td key={columnIndex}> {rows?.[column.id]} </td>;
                   })}
                   {props.tableType == "companies" && (
@@ -73,7 +76,13 @@ export default function Table(props: Props) {
                   {props.tableType == "users" && (
                     <td>
                       <div className="flex flex-row items-center space-x-1">
-                        <label htmlFor="migrate_user" className="btn">
+                        <label
+                          onClick={() =>
+                            props?.onMigrate && props?.onMigrate(rows.id)
+                          }
+                          htmlFor="migrate_user"
+                          className="btn"
+                        >
                           Migrate
                         </label>
                         <button
