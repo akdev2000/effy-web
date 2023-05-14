@@ -19,20 +19,12 @@ const companyColumn: ColumnType[] = [
   },
 ];
 
-const rowData = [
-  {
-    id: 1,
-    name: "test",
-    address: "address",
-  },
-];
-
 export default function Companies() {
   const companies = useGet("/companies");
   const { data, fetchData, error, loading } = usePost(`/company/add`);
   const deleteCompany = usePost(`/company/delete`);
   const [companyName, setCompanyName] = useState("");
-  const [address, setAddress] = useState("");
+  // const [address, setAddress] = useState("");
   const [lattitude, setLattitude] = useState("");
   const [longtitude, setLongtitude] = useState("");
 
@@ -83,8 +75,9 @@ export default function Companies() {
                 name: companyName,
                 lat: lattitude,
                 long: longtitude,
-                address: address,
+                // address: address,
               });
+              await companies.fetchData();
               router.push("/");
             }}
           >
@@ -99,7 +92,7 @@ export default function Companies() {
                 }}
                 required
               />
-              <input
+              {/* <input
                 type="text"
                 placeholder="Address"
                 className="input input-bordered form-control"
@@ -107,7 +100,7 @@ export default function Companies() {
                 onChange={(event) => {
                   setAddress(event.target.value);
                 }}
-              />
+              /> */}
             </div>
             <div className="flex items-center m-2 justify-between">
               <input
