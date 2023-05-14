@@ -51,6 +51,15 @@ export default function Table(props: Props) {
                     <>
                       <td>
                         <div className="flex flex-row items-center space-x-1">
+                          <Link
+                            href={{
+                              pathname: `/company`,
+                              query: { id: rows.id },
+                            }}
+                            className="flex flex-row items-center space-x-1"
+                          >
+                            <button className="btn">View Details</button>
+                          </Link>
                           <button
                             onClick={() => props.onDelete(rows.id)}
                             className="btn btn-error text-white"
