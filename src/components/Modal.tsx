@@ -6,7 +6,7 @@ interface Props {
 
 export default function Modal({ children, title, modalId }: Props) {
   return (
-    <div>
+    <div id={`${modalId}_root`}>
       <input type="checkbox" id={modalId} className="modal-toggle" />
       <div className="modal">
         <div className="modal-box max-w-2xl">

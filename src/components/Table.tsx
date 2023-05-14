@@ -1,8 +1,10 @@
+import Link from "next/link";
+
 interface Props {
   columns: ColumnType[];
   rows: Record<string, any>[];
   onCreate?: (id: number) => void;
-  onDelete?: (id: number) => void;
+  onDelete: (id: number) => void;
   tableType?: "companies" | "users";
 }
 
@@ -12,7 +14,6 @@ export interface ColumnType {
 }
 
 export default function Table(props: Props) {
-  function onDelete(id: number) {}
   return (
     <div className="overflow-x-auto">
       <table className="table w-full">
@@ -33,52 +34,65 @@ export default function Table(props: Props) {
           </tr>
         </thead>
         <tbody>
-          {props.rows?.map((rows,rowIndex) => {
-            return (
-              <tr key={rowIndex} >
-                {props.columns?.map((column,columnIndex) => {
-                  return <td key={columnIndex}> {rows?.[column.id]} </td>;
-                })}
-                {props.tableType == "companies" && (
-                  <>
+          {props.rows?.length > 0 &&
+            props.rows?.map((rows, rowIndex) => {
+              return (
+                <tr key={rowIndex}>
+                  {props.columns?.map((column, columnIndex) => {
+                    if (column.id == "company") {
+                      return <td key={columnIndex}> {rows?.Company?.name} </td>;
+                    }
+                    return <td key={columnIndex}> {rows?.[column.id]} </td>;
+                  })}
+                  {props.tableType == "companies" && (
+                    <>
+                      <td>
+                        <div className="flex flex-row items-center space-x-1">
+                          <button
+                            onClick={() => props.onDelete(rows.id)}
+                            className="btn btn-error text-white"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                      <td>
+                        <Link
+                          href={{
+                            pathname: `/users`,
+                            query: { id: rows.id },
+                          }}
+                          className="flex flex-row items-center space-x-1"
+                        >
+                          <button className="btn">View Users</button>
+                        </Link>
+                      </td>
+                    </>
+                  )}
+
+                  {props.tableType == "users" && (
                     <td>
                       <div className="flex flex-row items-center space-x-1">
-                        <label className="btn" htmlFor="add_new_user">
-                          Add New User
+                        <label htmlFor="migrate_user" className="btn">
+                          Migrate
                         </label>
-                        <button className="btn btn-error text-white">
+                        <button
+                          className="btn btn-error text-white"
+                          onClick={() => props.onDelete(rows.id)}
+                        >
                           Delete
                         </button>
                       </div>
                     </td>
-                    <td>
-                      <a
-                        href={`/users?id=${rows}`}
-                        className="flex flex-row items-center space-x-1"
-                      >
-                        <button className="btn">View Users</button>
-                      </a>
-                    </td>
-                  </>
-                )}
-
-                {props.tableType == "users" && (
-                  <td>
-                    <div className="flex flex-row items-center space-x-1">
-                      <label htmlFor="migrate_user" className="btn">
-                        Migrate
-                      </label>
-                      <button className="btn btn-error text-white">
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                )}
-              </tr>
-            );
-          })}
+                  )}
+                </tr>
+              );
+            })}
         </tbody>
       </table>
+      {props.rows?.length <= 0 && (
+        <div className="text-center text-gray-600 mt-2">No data found</div>
+      )}
     </div>
   );
 }

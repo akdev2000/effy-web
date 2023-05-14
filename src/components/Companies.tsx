@@ -1,7 +1,8 @@
 import Table, { ColumnType } from "@/components/Table";
-import Modal from "./Modal";
-import { useState } from "react";
 import { useGet, usePost } from "@/hooks";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import Modal from "./Modal";
 
 const companyColumn: ColumnType[] = [
   {
@@ -27,30 +28,28 @@ const rowData = [
 ];
 
 export default function Companies() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [designation, setDesignation] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
-  const [isActive, setIsActive] = useState(true);
-
-  const { fetchData, data, loading, error } = usePost("/user/add");
-
   const companies = useGet("/companies");
+  const { data, fetchData, error, loading } = usePost(`/company/add`);
+  const deleteCompany = usePost(`/company/delete`);
+  const [companyName, setCompanyName] = useState("");
+  const [address, setAddress] = useState("");
+  const [lattitude, setLattitude] = useState("");
+  const [longtitude, setLongtitude] = useState("");
 
-  async function addUser() {
-    console.log("user");
-    const userData = {
-      first_name: firstName,
-      last_name: lastName,
-      email,
-      designation: designation,
-      dob: dateOfBirth,
-      is_active: isActive,
-    };
-    console.log("user", userData);
-    await fetchData(userData);
-  }
+  const router = useRouter();
+
+  useEffect(() => {
+    if (data) {
+      console.log("message", data);
+      alert(data.message);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    (async () => {
+      await companies.fetchData();
+    })();
+  }, []);
 
   return (
     <div
@@ -58,122 +57,92 @@ export default function Companies() {
         display: "flex",
         alignItems: "flex-start",
         justifyContent: "flex-start",
+        flexDirection: "column",
       }}
+      className="space-y-2"
     >
+      <div className="flex flex-row items-center space-x-1">
+        <label className="btn" htmlFor="add_new_company">
+          Add New Company
+        </label>
+      </div>
       <Table
         columns={companyColumn}
         rows={companies.data?.data}
         tableType="companies"
+        onDelete={async (id) => {
+          await deleteCompany.fetchData({}, `/${id}`);
+          await companies.fetchData();
+        }}
       />
-      <Modal modalId="add_new_user" title="Add New User">
+      <Modal modalId="add_new_company" title="Add New Company">
         <div>
-          <form onSubmit={addUser}>
+          <form
+            onSubmit={async () => {
+              await fetchData({
+                name: companyName,
+                lat: lattitude,
+                long: longtitude,
+                address: address,
+              });
+              router.push("/");
+            }}
+          >
             <div className="flex items-center m-2 justify-between">
               <input
                 type="text"
-                placeholder="First Name"
-                className="input form-control input-bordered"
-                required
-                value={firstName}
+                placeholder="Name"
+                className="input input-bordered form-control"
+                value={companyName}
                 onChange={(event) => {
-                  setFirstName(event.target.value);
+                  setCompanyName(event.target.value);
                 }}
+                required
               />
               <input
                 type="text"
-                placeholder="Last Name"
-                className="input form-control input-bordered"
-                required
-                value={lastName}
+                placeholder="Address"
+                className="input input-bordered form-control"
+                value={address}
                 onChange={(event) => {
-                  setLastName(event.target.value);
+                  setAddress(event.target.value);
                 }}
               />
             </div>
             <div className="flex items-center m-2 justify-between">
               <input
-                type="email"
-                placeholder="Email"
-                className="input form-control input-bordered"
-                required
-                value={email}
+                type="text"
+                placeholder="Latitute"
+                className="input input-bordered form-control"
+                value={lattitude}
                 onChange={(event) => {
-                  setEmail(event.target.value);
+                  setLattitude(event.target.value);
                 }}
+                required
               />
               <input
                 type="text"
-                placeholder="Designation"
-                className="input form-control input-bordered"
-                required
-                value={designation}
+                placeholder="Logntitude"
+                className="input input-bordered form-control"
+                value={longtitude}
                 onChange={(event) => {
-                  setDesignation(event.target.value);
+                  setLongtitude(event.target.value);
                 }}
+                required
               />
             </div>
-            <div className="flex items-center m-2 justify-between">
-              <div className="flex">
-                <label className="text-gray-400 ml-4 m-2">DOB</label>
-                <div className="relative max-w-sm">
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <svg
-                      aria-hidden="true"
-                      className="w-5 h-5 text-gray-500 dark:text-gray-400"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                        clipRule="evenodd"
-                      ></path>
-                    </svg>
-                  </div>
-                  <input
-                    type="date"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 input-bordered input-primary"
-                    placeholder="Select date"
-                    required
-                    value={dateOfBirth}
-                    onChange={(event) => {
-                      setDateOfBirth(event.target.value);
-                    }}
-                  />
-                </div>
-              </div>
-              <div
-                className="form-control flex items-start"
-                style={{ width: "40%" }}
-              >
-                <label className="flex items-center cursor-pointer  space-x-2">
-                  <input
-                    type="checkbox"
-                    checked={isActive ? true : false}
-                    className="checkbox"
-                    onChange={() => {
-                      setIsActive(!isActive);
-                    }}
-                  />
-                  <span className="label-text">Activate User</span>
-                </label>
-              </div>
-            </div>
-            <div className="flex space-x-2 justify-end items-center">
+            <div className="flex space-x-2 justify-end">
               <div className="modal-action">
                 <label
-                  htmlFor="add_new_user"
+                  htmlFor="add_new_company"
                   className="btn btn-error text-white"
                 >
                   Cancel
                 </label>
               </div>
-              <div className="modal-action">
-                <button type="submit" className="btn">
-                  Add User
-                </button>
-              </div>
+              <button type="submit" className="modal-action btn">
+                Add Company
+              </button>
             </div>
           </form>
         </div>

@@ -1,6 +1,4 @@
-import React, { ReactElement, useEffect, useState } from "react";
-import Modal from "./Modal";
-import { usePost } from "@/hooks";
+import React from "react";
 
 export enum TabTypes {
   COMPANIES = "COMPANIES",
@@ -11,18 +9,6 @@ type Props = {
   children: React.ReactElement;
 };
 export function Root({ children }: Props) {
-  const { data, fetchData, error, loading } = usePost(`/company/add`);
-  const [companyName, setCompanyName] = useState("");
-  const [address, setAddress] = useState("");
-  const [lattitude, setLattitude] = useState("");
-  const [longtitude, setLongtitude] = useState("");
-
-  useEffect(() => {
-    if(data) {
-      console.log("message"  , data)
-      alert(data.message)
-    }
-  },[data])
   return (
     <div
       style={{
@@ -42,11 +28,6 @@ export function Root({ children }: Props) {
             Companies - Admin Panel
           </a>
         </div>
-        <div className="flex flex-row items-center space-x-1">
-          <label className="btn" htmlFor="add_new_company">
-            Add New Company
-          </label>
-        </div>
       </div>
       <div
         style={{
@@ -58,77 +39,6 @@ export function Root({ children }: Props) {
       >
         {children}
       </div>
-      <Modal modalId="add_new_company" title="Add New Company">
-        <div>
-          <form
-            onSubmit={async () => {
-              await fetchData({
-                name: companyName,
-                lat: lattitude,
-                long: longtitude,
-                address: address,
-              });
-            }}
-          >
-            <div className="flex items-center m-2 justify-between">
-              <input
-                type="text"
-                placeholder="Name"
-                className="input input-bordered form-control"
-                value={companyName}
-                onChange={(event) => {
-                  setCompanyName(event.target.value);
-                }}
-                required
-              />
-              <input
-                type="text"
-                placeholder="Address"
-                className="input input-bordered form-control"
-                value={address}
-                onChange={(event) => {
-                  setAddress(event.target.value);
-                }}
-              />
-            </div>
-            <div className="flex items-center m-2 justify-between">
-              <input
-                type="text"
-                placeholder="Latitute"
-                className="input input-bordered form-control"
-                value={lattitude}
-                onChange={(event) => {
-                  setLattitude(event.target.value);
-                }}
-                required
-              />
-              <input
-                type="text"
-                placeholder="Logntitude"
-                className="input input-bordered form-control"
-                value={longtitude}
-                onChange={(event) => {
-                  setLongtitude(event.target.value);
-                }}
-                required
-              />
-            </div>
-            <div className="flex space-x-2 justify-end">
-              <div className="modal-action">
-                <label
-                  htmlFor="add_new_company"
-                  className="btn btn-error text-white"
-                >
-                  Cancel
-                </label>
-              </div>
-              <button type="submit" className="modal-action btn">
-                Add Company
-              </button>
-            </div>
-          </form>
-        </div>
-      </Modal>
     </div>
   );
 }
