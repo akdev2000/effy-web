@@ -24,9 +24,7 @@ export default function Companies() {
   const { data, fetchData, error, loading } = usePost(`/company/add`);
   const deleteCompany = usePost(`/company/delete`);
   const [companyName, setCompanyName] = useState("");
-  // const [address, setAddress] = useState("");
-  const [lattitude, setLattitude] = useState("");
-  const [longtitude, setLongtitude] = useState("");
+  const [address, setAddress] = useState("");
 
   const router = useRouter();
 
@@ -73,9 +71,7 @@ export default function Companies() {
             onSubmit={async () => {
               await fetchData({
                 name: companyName,
-                lat: lattitude,
-                long: longtitude,
-                // address: address,
+                address: address,
               });
               await companies.fetchData();
               router.push("/");
@@ -92,7 +88,7 @@ export default function Companies() {
                 }}
                 required
               />
-              {/* <input
+              <input
                 type="text"
                 placeholder="Address"
                 className="input input-bordered form-control"
@@ -100,28 +96,6 @@ export default function Companies() {
                 onChange={(event) => {
                   setAddress(event.target.value);
                 }}
-              /> */}
-            </div>
-            <div className="flex items-center m-2 justify-between">
-              <input
-                type="text"
-                placeholder="Latitute"
-                className="input input-bordered form-control"
-                value={lattitude}
-                onChange={(event) => {
-                  setLattitude(event.target.value);
-                }}
-                required
-              />
-              <input
-                type="text"
-                placeholder="Logntitude"
-                className="input input-bordered form-control"
-                value={longtitude}
-                onChange={(event) => {
-                  setLongtitude(event.target.value);
-                }}
-                required
               />
             </div>
             <div className="flex space-x-2 justify-end">
