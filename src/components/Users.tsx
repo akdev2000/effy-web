@@ -59,7 +59,7 @@ export default function Users() {
           <form>
             <div className="flex items-center m-2 justify-between">
               <select className="select select-bordered w-full max-w-xs">
-                <option disabled selected>
+                <option disabled>
                   Who shot first?
                 </option>
                 <option>Han Solo</option>

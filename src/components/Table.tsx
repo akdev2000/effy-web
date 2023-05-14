@@ -19,8 +19,8 @@ export default function Table(props: Props) {
         {/* head*/}
         <thead>
           <tr>
-            {props.columns?.map((column) => {
-              return <th>{column.name}</th>;
+            {props.columns?.map((column, index) => {
+              return <th key={index}>{column.name}</th>;
             })}
             <th>
               <p>Actions</p>
@@ -33,11 +33,11 @@ export default function Table(props: Props) {
           </tr>
         </thead>
         <tbody>
-          {props.rows?.map((rows) => {
+          {props.rows?.map((rows,rowIndex) => {
             return (
-              <tr>
-                {props.columns?.map((column) => {
-                  return <td> {rows?.[column.id]} </td>;
+              <tr key={rowIndex} >
+                {props.columns?.map((column,columnIndex) => {
+                  return <td key={columnIndex}> {rows?.[column.id]} </td>;
                 })}
                 {props.tableType == "companies" && (
                   <>
