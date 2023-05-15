@@ -30,6 +30,16 @@ export default function Companies() {
   const router = useRouter();
 
   useEffect(() => {
+    if (deleteCompany.data) {
+      if (deleteCompany.data.status == "success") {
+        toast.success(deleteCompany.data.message);
+      } else {
+        toast.error(deleteCompany.data.message);
+      }
+    }
+  }, [deleteCompany.data]);
+
+  useEffect(() => {
     if (data) {
       companies.fetchData();
       if (data.status == "success") {

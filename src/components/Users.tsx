@@ -71,6 +71,16 @@ export default function Users() {
   }, [migrateUser.data]);
 
   useEffect(() => {
+    if (deleteUser.data) {
+      if (deleteUser.data.status == "success") {
+        toast.success(deleteUser.data.message);
+      } else {
+        toast.error(deleteUser.data.message);
+      }
+    }
+  }, [deleteUser.data]);
+
+  useEffect(() => {
     (async () => {
       await companies.fetchData();
     })();
