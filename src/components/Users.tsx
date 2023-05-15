@@ -2,6 +2,7 @@ import Table, { ColumnType } from "@/components/Table";
 import { useGet, usePost } from "@/hooks";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import AddUserModal from "./AddUserModal";
 import Modal from "./Modal";
 
@@ -60,10 +61,14 @@ export default function Users() {
   const [selectedUserId, setSelectedUserId] = useState(0);
 
   useEffect(() => {
-    if (data) {
-      console.log("firstdata ", data.data);
+    if (migrateUser.data) {
+      if (migrateUser.data.status == "success") {
+        toast.success(migrateUser.data.message);
+      } else {
+        toast.error(migrateUser.data.message);
+      }
     }
-  }, [data]);
+  }, [migrateUser.data]);
 
   useEffect(() => {
     (async () => {

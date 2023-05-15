@@ -2,6 +2,7 @@ import Table, { ColumnType } from "@/components/Table";
 import { useGet, usePost } from "@/hooks";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import Modal from "./Modal";
 
 const companyColumn: ColumnType[] = [
@@ -30,8 +31,12 @@ export default function Companies() {
 
   useEffect(() => {
     if (data) {
-      console.log("message", data);
-      alert(data.message);
+      companies.fetchData();
+      if (data.status == "success") {
+        toast.success(data.message);
+      } else {
+        toast.error(data.message || "Unable to process");
+      }
     }
   }, [data]);
 
@@ -68,13 +73,17 @@ export default function Companies() {
       <Modal modalId="add_new_company" title="Add New Company">
         <div>
           <form
-            onSubmit={async () => {
+            onSubmit={async (event) => {
+              event.preventDefault();
               await fetchData({
                 name: companyName,
                 address: address,
               });
-              await companies.fetchData();
-              router.push("/");
+              router.push(`/`);
+              document
+                .getElementById("add_new_company_root")
+                ?.classList.add("hidden");
+              companies.fetchData();
             }}
           >
             <div className="flex items-center m-2 justify-between">

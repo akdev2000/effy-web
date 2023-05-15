@@ -1,6 +1,7 @@
 import { usePost } from "@/hooks";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import Modal from "./Modal";
 
 export default function AddUserModal({
@@ -18,6 +19,16 @@ export default function AddUserModal({
   const [isActive, setIsActive] = useState(true);
 
   const { fetchData, data, loading, error } = usePost("/user/add");
+
+  useEffect(() => {
+    if (data && data.message) {
+      if (data.status == "success") {
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
+      }
+    }
+  }, [data]);
 
   async function addUser(id: number) {
     console.log("user");

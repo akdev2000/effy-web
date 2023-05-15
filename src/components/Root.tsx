@@ -1,4 +1,5 @@
 import React from "react";
+import { Toaster } from "react-hot-toast";
 
 export enum TabTypes {
   COMPANIES = "COMPANIES",
@@ -29,6 +30,7 @@ export function Root({ children }: Props) {
           </a>
         </div>
       </div>
+      <Toaster position="top-right" />
       <div
         style={{
           marginTop: 10,
