@@ -15,20 +15,25 @@ export default function company() {
   }, [router.isReady]);
   return (
     <Root>
-      <div className="space-y-2">
-        <h2 className="text-xl">Company Name : {companies.data?.data.name}</h2>
-        <h3 className="text-lg">
-          Company Address : {companies.data?.data.address}
-        </h3>
-        <h4 className="text-base">
-          Latitude : {companies.data?.data.lat}
-          <br />
-          Longtitude : {companies.data?.data.long}
-        </h4>
-        <h4 className="text-base font-bold" >Map Location</h4>
+      <div className="flex flex-col item-center space-y-2">
+        <div>
+          <h2 className="text-xl">
+            Company Name : {companies.data?.data.name}
+          </h2>
+          <h3 className="text-lg">
+            Company Address : {companies.data?.data.address}
+          </h3>
+          <h4 className="text-base">
+            Latitude : {companies.data?.data.lat}
+            <br />
+            Longtitude : {companies.data?.data.long}
+          </h4>
+          <h4 className="text-base font-bold">Map Location</h4>
+        </div>
         <SimpleMap
           lat={companies.data?.data.lat}
           long={companies.data?.data.long}
+          address={companies.data?.data.address}
         />
       </div>
     </Root>
